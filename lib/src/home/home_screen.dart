@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mottu/shared/helpers/snack_bar_helper.dart';
-import 'package:mottu/src/Home/home_controller.dart';
+import 'package:mottu/shared/themes/default/default_pallete.dart';
+import 'package:mottu/src/home/home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeController controller = Get.put(HomeController());
+  HomeController controller = Get.put(HomeController(), tag: 'home');
 
   @override
   void initState() {
@@ -49,23 +50,34 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         itemBuilder: (_, i) {
                           var character = controller.charactersList[i];
-                          return Column(
-                            children: [
-                              Expanded(
-                                child: Image.network(
-                                  '${character.thumbnail!.path}.${character.thumbnail!.extension}',
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.fill,
+                          return InkWell(
+                            splashColor: PalleteColor.white,
+                            onTap: () {
+                              Get.toNamed('/details', arguments: {
+                                'name': character.name,
+                                'imageThumbnail': character.thumbnail,
+                                'description': character.description,
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Image.network(
+                                    '${character.thumbnail!.path}.${character.thumbnail!.extension}',
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  character.name!,
-                                  overflow: TextOverflow.ellipsis,
+                                Flexible(
+                                  child: Text(
+                                    character.name!,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           );
                         }),
                   ),

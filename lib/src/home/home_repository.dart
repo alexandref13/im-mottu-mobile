@@ -7,8 +7,15 @@ class HomeRepository {
   UrlHelper urlHelper = UrlHelper();
 
   Future getCharacters() async {
+    //Note -> Ultimos personagens que foram modificidos na api da Marvel
+
     String finalUrl =
-        urlHelper.generateUrl(path: 'characters', params: '&limit=50');
+        urlHelper.generateUrl(path: 'characters', params: '&orderBy=modified');
+    return await dio.get('/$finalUrl');
+  }
+
+  Future getCharactersById({required String id}) async {
+    String finalUrl = urlHelper.generateUrl(path: 'characters/$id');
     return await dio.get('/$finalUrl');
   }
 }

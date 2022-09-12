@@ -25,7 +25,19 @@ class HomeController extends GetxController {
         isLoading(false);
       });
     } on DioError catch (err) {
-      errorMessage.value = err.response!.data['message'].toString();
+      errorMessage.value = err.response?.data['status'];
+      isLoading(false);
+    }
+  }
+
+  getCharactersById({required String id}) async {
+    try {
+      await homeRepository.getCharactersById(id: id).then((value) {
+        var data = value.data['data']['results'];
+        print(data);
+      });
+    } on DioError catch (err) {
+      errorMessage.value = err.response!.data['status'];
       isLoading(false);
     }
   }
