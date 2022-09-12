@@ -1,0 +1,11 @@
+import 'package:flutter/material.dart';
+
+class PalleteColor implements Colors {
+  static const int grayPrimary = 0xFF57585E;
+  static const int mainColor = 0xFFD4110B;
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color black = Color(0xFF000000);
+  static const Color sucess = Color(0xFF00C67E);
+  static const Color warning = Color(0xFFD63300);
+  static const Color info = Color(0xFFFCCC51);
+}
