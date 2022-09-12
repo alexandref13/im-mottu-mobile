@@ -1,4 +1,4 @@
-package com.example.mottu
+package com.mottu.marvel
 
 import io.flutter.embedding.android.FlutterActivity
 

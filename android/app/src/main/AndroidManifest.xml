@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mottu">
+    package="com.mottu.marvel">
    <application
         android:label="mottu"
         android:name="${applicationName}"

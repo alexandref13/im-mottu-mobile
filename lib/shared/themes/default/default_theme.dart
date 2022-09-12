@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'default_fonts_style.dart';
 import 'default_pallete.dart';
 
 export 'default_fonts_style.dart';
@@ -12,6 +13,13 @@ class DefaultTheme {
     return ThemeData(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: PalleteColor.white,
+      appBarTheme: AppBarTheme(
+        centerTitle: true,
+        backgroundColor: PalleteColor.mainColor,
+        titleTextStyle: DefaultFontStyle.headingXSmall.getText.copyWith(
+          color: PalleteColor.white,
+        ),
+      ),
     );
   }
 }

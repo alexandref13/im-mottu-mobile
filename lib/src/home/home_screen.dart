@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mottu/shared/helpers/snack_bar_helper.dart';
-import 'package:mottu/shared/themes/themes.dart';
 import 'package:mottu/src/Home/home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,24 +27,77 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(PalleteColor.mainColor),
+        title: const Text("I'm Mottu"),
       ),
-      body: Obx(
-        () => controller.isLoading.value
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.builder(
-                itemCount: controller.charactersList.length,
-                itemBuilder: ((_, i) {
-                  var character = controller.charactersList[i];
-
-                  return ListTile(
-                    title: Text(character.name!),
-                  );
-                }),
-              ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 16),
+          Obx(
+            () => controller.isLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                    child: GridView.builder(
+                        itemCount: controller.charactersList.length,
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                        ),
+                        itemBuilder: (_, i) {
+                          var character = controller.charactersList[i];
+                          return Column(
+                            children: [
+                              Expanded(
+                                child: Image.network(
+                                  '${character.thumbnail!.path}.${character.thumbnail!.extension}',
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Flexible(
+                                child: Text(
+                                  character.name!,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
+                  ),
+          ),
+        ],
       ),
     );
   }
 }
+
+// ListView.builder(
+//                       scrollDirection: Axis.horizontal,
+//                       itemCount: controller.charactersList.length,
+//                       itemBuilder: ((_, i) {
+//                         var character = controller.charactersList[i];
+
+//                         return Padding(
+//                           padding: const EdgeInsets.all(8.0),
+//                           child: Card(
+//                             color: const Color(0xffa82823),
+//                             child: Row(
+//                               children: [
+//                                 Image.network(
+//                                   "${character.thumbnail!.path}.${character.thumbnail!.extension}",
+//                                   width: 80,
+//                                   height: 80,
+//                                   fit: BoxFit.fill,
+//                                 ),
+//                                 Text(character.name!)
+//                               ],
+//                             ),
+//                           ),
+//                         );
+//                       }),
+//                     ),

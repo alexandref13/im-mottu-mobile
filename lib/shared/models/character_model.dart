@@ -1,4 +1,4 @@
-import 'thumbnail_model.dart';
+import 'package:mottu/shared/models/thumbnail_model.dart';
 
 class CharacterModel {
   int? id;
