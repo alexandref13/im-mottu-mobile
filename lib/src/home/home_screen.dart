@@ -11,11 +11,14 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   HomeController controller = Get.put(HomeController(), tag: 'home');
+  AppLifecycleState appLifecycleState = AppLifecycleState.detached;
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
     controller.errorMessage.listen((value) {
       if (value != '') {
         SnackbarHelper.showFailure(context, message: value);
@@ -25,10 +28,36 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      await controller.handleDeleteCache();
+    }
+
+    appLifecycleState = state;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text("I'm Mottu"),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await controller.getCharacters();
+              },
+              icon: const Icon(
+                Icons.refresh_sharp,
+              ),
+            )
+          ],
         ),
         body: Obx(
           () => controller.isLoading.value

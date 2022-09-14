@@ -2,13 +2,15 @@ import 'package:dio/dio.dart';
 import 'package:mottu/shared/helpers/url_helper.dart';
 import 'package:mottu/shared/service/custom_dio.dart';
 import 'package:mottu/shared/service/dio_cache.dart';
+import 'package:mottu/src/home/home_repository_interface.dart';
 
-class HomeRepository {
+class HomeRepository implements IHomeRepository {
   Dio dio = CustomDio().dio;
   DioCache dioCache = DioCache();
   UrlHelper urlHelper = UrlHelper();
 
-  Future getCharacters() async {
+  @override
+  Future<Response> getCharacters() async {
     //NOTE -> Ultimos personagens que foram modificados na api da Marvel
     String finalUrl =
         urlHelper.generateUrl(path: 'characters', params: '&orderBy=modified');
@@ -18,7 +20,8 @@ class HomeRepository {
     return await dio.get('/$finalUrl', options: dioCache.cacheOptions);
   }
 
-  Future getSearchCharacters({required String search}) async {
+  @override
+  Future<Response> getSearchCharacters({required String search}) async {
     String finalUrl = urlHelper.generateUrl(
       path: 'characters',
       params: '&orderBy=modified&nameStartsWith=$search',
