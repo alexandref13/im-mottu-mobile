@@ -14,8 +14,11 @@ class HomeRepository {
     return await dio.get('/$finalUrl');
   }
 
-  Future getCharactersById({required String id}) async {
-    String finalUrl = urlHelper.generateUrl(path: 'characters/$id');
+  Future getSearchCharacters({required String search}) async {
+    String finalUrl = urlHelper.generateUrl(
+      path: 'characters',
+      params: '&orderBy=modified&nameStartsWith=$search',
+    );
     return await dio.get('/$finalUrl');
   }
 }
