@@ -1,16 +1,21 @@
-# mottu
+# 🛵 I'm Mottu Mobile 🛵
 
-A new Flutter project.
+### Teste prático para desenvolvedores Mobile Mottu
 
-## Getting Started
+- Executar etapas iniciais [X];
+- Criar uma Splashscreen customizada [X];
+- Guardar em cache as consultas realizadas na API Marvel [X];
+- Limpar cache de consultas no fechamento do APP [X];
+- Mostrar a listagem dos personagens (imagem e nome) [X];
+- Criar um filtro para a listagem [X];
+- Ciar uma paginação da listagem [X];
+- Ação de clique nos cards da listagem e exibir os detalhes (imagem, nome, descrição e personagens relacionados);
+- Ação de clique nos personagens relacionados e exibir os detalhes (imagem, nome, descrição e personagens relacionados);
 
-This project is a starting point for a Flutter application.
+> Ao final de cada etapa, criar PR para a branch **main** e realizar o merge.
 
-A few resources to get you started if this is your first Flutter project:
+# Pontos extras (opcional):
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Utilizar Getx [X].
+- Configurar Firebase crashlytics [X].
+- Criar channel em kotlin, capturar a mudança de conexão, e mostrar uma mensagem de offline no flutter.
