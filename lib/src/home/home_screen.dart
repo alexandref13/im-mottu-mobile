@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mottu/shared/helpers/cached_network_image_widget.dart';
 import 'package:mottu/shared/helpers/snack_bar_helper.dart';
 import 'package:mottu/shared/themes/default/default_theme.dart';
 import 'package:mottu/src/home/home_controller.dart';
@@ -126,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: ListView.builder(
                       controller: controller.scrollController,
@@ -141,24 +143,31 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               'description': character.description,
                             });
                           },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Image.network(
-                                  '${character.thumbnail!.path}.${character.thumbnail!.extension}',
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.fill,
-                                ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              Flexible(
-                                child: Text(
+                              elevation: 5,
+                              child: ListTile(
+                                leading: CachedNetworkImageWidget(
+                                  image:
+                                      '${character.thumbnail!.path}.${character.thumbnail!.extension}',
+                                ),
+                                title: Text(
                                   character.name!,
                                   overflow: TextOverflow.ellipsis,
+                                  style: DefaultFontStyle.headingXSmall.getText
+                                      .copyWith(
+                                    color: PalleteColor.grayPrimary,
+                                  ),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         );
                       },
