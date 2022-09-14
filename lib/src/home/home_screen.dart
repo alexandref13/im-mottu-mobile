@@ -1,5 +1,7 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mottu/shared/helpers/cached_network_image_widget.dart';
 import 'package:mottu/shared/helpers/snack_bar_helper.dart';
 import 'package:mottu/shared/themes/default/default_theme.dart';
 import 'package:mottu/src/home/home_controller.dart';
@@ -56,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         actions: [
           IconButton(
             onPressed: () async {
-              controller.page = 1;
               await controller.getCharacters();
             },
             icon: const Icon(
@@ -75,57 +76,64 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              style: DefaultFontStyle.paragraphSmall.getText
-                                  .copyWith(
-                                color: PalleteColor.grayPrimary,
-                              ),
-                              controller: controller.searchController.value,
-                              scrollPadding:
-                                  const EdgeInsets.symmetric(vertical: 30),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: PalleteColor.grayPrimary,
+                  AnimatedCard(
+                    direction: AnimatedCardDirection.left,
+                    initDelay: const Duration(
+                      milliseconds: 250,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 45,
+                              child: TextFormField(
+                                style: DefaultFontStyle.paragraphSmall.getText
+                                    .copyWith(
+                                  color: PalleteColor.grayPrimary,
+                                ),
+                                controller: controller.searchController.value,
+                                scrollPadding:
+                                    const EdgeInsets.symmetric(vertical: 30),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                    borderSide: const BorderSide(
+                                      width: 1,
+                                      color: PalleteColor.grayPrimary,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        SizedBox(
-                          height: 45,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (controller
-                                  .searchController.value.text.isEmpty) {
-                                SnackbarHelper.showFailure(
-                                  context,
-                                  message: 'Search field is required',
-                                );
-                              } else {
-                                await controller.getSearchCharacters(
-                                  search:
-                                      controller.searchController.value.text,
-                                );
-                              }
-                            },
-                            child: const Text('Search'),
-                          ),
-                        )
-                      ],
+                          const SizedBox(width: 16),
+                          SizedBox(
+                            height: 45,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (controller
+                                    .searchController.value.text.isEmpty) {
+                                  SnackbarHelper.showFailure(
+                                    context,
+                                    message: 'Search field is required',
+                                  );
+                                } else {
+                                  await controller.getSearchCharacters(
+                                    search:
+                                        controller.searchController.value.text,
+                                  );
+                                }
+                              },
+                              child: const Text('Search'),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: ListView.builder(
                       controller: controller.scrollController,
@@ -141,24 +149,39 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               'description': character.description,
                             });
                           },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Image.network(
-                                  '${character.thumbnail!.path}.${character.thumbnail!.extension}',
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.fill,
+                          child: AnimatedCard(
+                            keepAlive: true,
+                            direction: AnimatedCardDirection.left,
+                            initDelay: const Duration(
+                              milliseconds: 500,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                elevation: 5,
+                                child: ListTile(
+                                  leading: CachedNetworkImageWidget(
+                                    image:
+                                        '${character.thumbnail!.path}.${character.thumbnail!.extension}',
+                                  ),
+                                  title: Text(
+                                    character.name!,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: DefaultFontStyle
+                                        .headingXSmall.getText
+                                        .copyWith(
+                                      color: PalleteColor.grayPrimary,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Flexible(
-                                child: Text(
-                                  character.name!,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         );
                       },

@@ -10,7 +10,21 @@ class HomeRepository implements IHomeRepository {
   UrlHelper urlHelper = UrlHelper();
 
   @override
-  Future<Response> getCharacters({int page = 1}) async {
+  Future<Response> getCharacters() async {
+    //NOTE -> Ultimos personagens que foram modificados na api da Marvel
+
+    String finalUrl = urlHelper.generateUrl(
+      path: 'characters',
+      params: '&limit=20',
+    );
+
+    dio.interceptors.add(dioCache.dioCacheManager.interceptor);
+
+    return await dio.get('/$finalUrl', options: dioCache.cacheOptions);
+  }
+
+  @override
+  Future<Response> getCharactersWithPagination({int page = 2}) async {
     //NOTE -> Ultimos personagens que foram modificados na api da Marvel
 
     var limit = page * 20;
@@ -20,9 +34,7 @@ class HomeRepository implements IHomeRepository {
       params: '&limit=$limit',
     );
 
-    dio.interceptors.add(dioCache.dioCacheManager.interceptor);
-
-    return await dio.get('/$finalUrl', options: dioCache.cacheOptions);
+    return await dio.get('/$finalUrl');
   }
 
   @override

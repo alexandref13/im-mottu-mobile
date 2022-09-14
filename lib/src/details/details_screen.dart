@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mottu/shared/helpers/cached_network_image_widget.dart';
 import 'package:mottu/shared/themes/default/default_fonts_style.dart';
 import 'package:mottu/shared/themes/default/default_pallete.dart';
 
@@ -15,32 +16,38 @@ class DetailsScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Details'),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 16),
-            Image.network(
-              '${args['imageThumbnail'].path}.${args['imageThumbnail'].extension}',
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * .5,
-              fit: BoxFit.cover,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 16),
+                CachedNetworkImageWidget(
+                  image:
+                      '${args['imageThumbnail'].path}.${args['imageThumbnail'].extension}',
+                  height: MediaQuery.of(context).size.height * .5,
+                  width: MediaQuery.of(context).size.width,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  args['name'],
+                  style: DefaultFontStyle.headingSmall.getText.copyWith(),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  args['description'] == ''
+                      ? 'This character has no description'
+                      : args['description'],
+                  style: DefaultFontStyle.paragraphSmall.getText.copyWith(
+                    color: args['description'] == ''
+                        ? PalleteColor.mainColor
+                        : PalleteColor.grayPrimary,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              args['name'],
-              style: DefaultFontStyle.paragraphLarge.getText.copyWith(),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              args['description'] == ''
-                  ? 'This character has no description'
-                  : args['description'],
-              style: DefaultFontStyle.caption.getText.copyWith(
-                  color: args['description'] == ''
-                      ? PalleteColor.mainColor
-                      : PalleteColor.black),
-            ),
-          ],
+          ),
         ),
       ),
     );
