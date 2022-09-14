@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mottu/shared/helpers/cached_network_image_widget.dart';
 import 'package:mottu/shared/helpers/snack_bar_helper.dart';
 import 'package:mottu/shared/themes/default/default_theme.dart';
+import 'package:mottu/shared/widgets/is_loading_page.dart';
 import 'package:mottu/src/home/home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -68,12 +69,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       ),
       body: Obx(
         () => controller.isLoading.value
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
+            ? const IsLoadingPage()
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 16),
                   AnimatedCard(
@@ -86,23 +83,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       child: Row(
                         children: [
                           Expanded(
-                            child: SizedBox(
-                              height: 45,
-                              child: TextFormField(
-                                style: DefaultFontStyle.paragraphSmall.getText
-                                    .copyWith(
-                                  color: PalleteColor.grayPrimary,
-                                ),
-                                controller: controller.searchController.value,
-                                scrollPadding:
-                                    const EdgeInsets.symmetric(vertical: 30),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(6),
-                                    borderSide: const BorderSide(
-                                      width: 1,
-                                      color: PalleteColor.grayPrimary,
-                                    ),
+                            child: TextFormField(
+                              style: DefaultFontStyle.paragraphSmall.getText
+                                  .copyWith(
+                                color: PalleteColor.grayPrimary,
+                              ),
+                              controller: controller.searchController.value,
+                              scrollPadding:
+                                  const EdgeInsets.symmetric(vertical: 30),
+                              decoration: InputDecoration(
+                                hintText: 'Search a character',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: PalleteColor.grayPrimary,
                                   ),
                                 ),
                               ),

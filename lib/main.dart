@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mottu/src/details/details_screen.dart';
@@ -6,7 +7,10 @@ import 'shared/themes/themes.dart';
 import 'src/home/home.dart';
 import 'src/splash/splash.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(GetMaterialApp(
     theme: DefaultTheme().getTheme,
     debugShowCheckedModeBanner: false,
