@@ -4,8 +4,12 @@ import 'package:get/get.dart';
 import 'package:mottu/shared/models/character_model.dart';
 import 'package:mottu/src/home/home_repository.dart';
 
+import '../../shared/helpers/url_helper.dart';
+import '../../shared/service/dio_cache.dart';
+
 class HomeController extends GetxController {
   HomeRepository homeRepository = HomeRepository();
+  DioCache dioCache = DioCache();
 
   var isLoading = false.obs;
   var errorMessage = ''.obs;
@@ -46,6 +50,17 @@ class HomeController extends GetxController {
       errorMessage.value = err.response!.data['status'];
       isLoading(false);
     }
+  }
+
+  handleDeleteCache() async {
+    UrlHelper urlHelper = UrlHelper();
+
+    String finalUrl =
+        urlHelper.generateUrl(path: 'characters', params: '&orderBy=modified');
+    bool response = await dioCache.dioCacheManager
+        .deleteByPrimaryKey('http://gateway.marvel.com/v1/public/$finalUrl');
+
+    print(response);
   }
 
   @override
