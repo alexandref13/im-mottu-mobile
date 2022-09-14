@@ -11,6 +11,5 @@ class DioCache {
   );
   Options cacheOptions = buildCacheOptions(
     const Duration(days: 3),
-    forceRefresh: true,
   );
 }
