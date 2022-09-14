@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 
 class DioCache {
-  //NOTE -> Cache com Dio durando 3 dias
+  //NOTE -> Cache com Dio durando 1 hora
   DioCacheManager dioCacheManager = DioCacheManager(
     CacheConfig(
       baseUrl: 'http://gateway.marvel.com/v1/public',
@@ -10,6 +10,6 @@ class DioCache {
     ),
   );
   Options cacheOptions = buildCacheOptions(
-    const Duration(days: 3),
+    const Duration(hours: 1),
   );
 }

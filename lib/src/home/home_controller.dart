@@ -15,14 +15,14 @@ class HomeController extends GetxController {
   var charactersList = <CharacterModel>[].obs;
   var searchController = TextEditingController().obs;
 
-  var page = 1;
+  var page = 2;
 
   late ScrollController scrollController;
 
-  Future<void> getCharacters({int page = 1}) async {
+  Future<void> getCharacters() async {
     isLoading(true);
     try {
-      await homeRepository.getCharacters(page: page).then((value) {
+      await homeRepository.getCharacters().then((value) {
         List data = value.data['data']['results'];
         var list = data.map((model) => CharacterModel.fromJson(model)).toList();
 
@@ -34,6 +34,22 @@ class HomeController extends GetxController {
     } on DioError catch (err) {
       errorMessage.value = err.response?.data['status'];
       isLoading(false);
+    }
+  }
+
+  Future<void> getCharactersWithPagination({int page = 2}) async {
+    try {
+      await homeRepository
+          .getCharactersWithPagination(page: page)
+          .then((value) {
+        List data = value.data['data']['results'];
+        var list = data.map((model) => CharacterModel.fromJson(model)).toList();
+
+        charactersList.clear();
+        charactersList.value = list;
+      });
+    } on DioError catch (err) {
+      errorMessage.value = err.response?.data['status'];
     }
   }
 
@@ -65,7 +81,7 @@ class HomeController extends GetxController {
       if (page <= 5) {
         page = ++page;
 
-        getCharacters(page: page);
+        getCharactersWithPagination(page: page);
       }
     }
   }
