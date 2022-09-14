@@ -37,10 +37,16 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getCharactersWithPagination({int page = 2}) async {
+  Future<void> getCharactersWithPagination({
+    int page = 2,
+    String? search,
+  }) async {
     try {
       await homeRepository
-          .getCharactersWithPagination(page: page)
+          .getCharactersWithPagination(
+        page: page,
+        search: search,
+      )
           .then((value) {
         List data = value.data['data']['results'];
         var list = data.map((model) => CharacterModel.fromJson(model)).toList();
@@ -81,7 +87,16 @@ class HomeController extends GetxController {
       if (page <= 5) {
         page = ++page;
 
-        getCharactersWithPagination(page: page);
+        if (searchController.value.text.isNotEmpty) {
+          getCharactersWithPagination(
+            page: page,
+            search: searchController.value.text,
+          );
+        } else {
+          getCharactersWithPagination(
+            page: page,
+          );
+        }
       }
     }
   }
