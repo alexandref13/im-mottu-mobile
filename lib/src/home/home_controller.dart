@@ -15,10 +15,14 @@ class HomeController extends GetxController {
   var charactersList = <CharacterModel>[].obs;
   var searchController = TextEditingController().obs;
 
-  Future<void> getCharacters() async {
+  var page = 1;
+
+  late ScrollController scrollController;
+
+  Future<void> getCharacters({int page = 1}) async {
     isLoading(true);
     try {
-      await homeRepository.getCharacters().then((value) {
+      await homeRepository.getCharacters(page: page).then((value) {
         List data = value.data['data']['results'];
         var list = data.map((model) => CharacterModel.fromJson(model)).toList();
 
@@ -52,14 +56,25 @@ class HomeController extends GetxController {
   }
 
   handleDeleteCache() async {
-    final response = await dioCache.dioCacheManager.clearAll();
+    await dioCache.dioCacheManager.clearAll();
+  }
 
-    print(response);
+  void scrollListener() async {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      if (page <= 5) {
+        page = ++page;
+
+        getCharacters(page: page);
+      }
+    }
   }
 
   @override
   void onInit() {
     getCharacters();
+    scrollController = ScrollController();
+
     super.onInit();
   }
 }

@@ -10,10 +10,15 @@ class HomeRepository implements IHomeRepository {
   UrlHelper urlHelper = UrlHelper();
 
   @override
-  Future<Response> getCharacters() async {
+  Future<Response> getCharacters({int page = 1}) async {
     //NOTE -> Ultimos personagens que foram modificados na api da Marvel
-    String finalUrl =
-        urlHelper.generateUrl(path: 'characters', params: '&orderBy=modified');
+
+    var limit = page * 20;
+
+    String finalUrl = urlHelper.generateUrl(
+      path: 'characters',
+      params: '&limit=$limit',
+    );
 
     dio.interceptors.add(dioCache.dioCacheManager.interceptor);
 
