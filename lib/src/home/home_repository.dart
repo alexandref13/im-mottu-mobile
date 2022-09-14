@@ -24,15 +24,23 @@ class HomeRepository implements IHomeRepository {
   }
 
   @override
-  Future<Response> getCharactersWithPagination({int page = 2}) async {
+  Future<Response> getCharactersWithPagination({
+    int page = 2,
+    String? search,
+  }) async {
     //NOTE -> Ultimos personagens que foram modificados na api da Marvel
 
     var limit = page * 20;
 
-    String finalUrl = urlHelper.generateUrl(
-      path: 'characters',
-      params: '&limit=$limit',
-    );
+    String finalUrl = search == null
+        ? urlHelper.generateUrl(
+            path: 'characters',
+            params: '&limit=$limit',
+          )
+        : urlHelper.generateUrl(
+            path: 'characters',
+            params: '&limit=$limit&nameStartsWith=$search',
+          );
 
     return await dio.get('/$finalUrl');
   }
@@ -41,7 +49,7 @@ class HomeRepository implements IHomeRepository {
   Future<Response> getSearchCharacters({required String search}) async {
     String finalUrl = urlHelper.generateUrl(
       path: 'characters',
-      params: '&orderBy=modified&nameStartsWith=$search',
+      params: '&limit=20&nameStartsWith=$search',
     );
     return await dio.get('/$finalUrl');
   }
