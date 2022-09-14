@@ -15,7 +15,7 @@ class HomeController extends GetxController {
   var charactersList = <CharacterModel>[].obs;
   var searchController = TextEditingController().obs;
 
-  getCharacters() async {
+  Future<void> getCharacters() async {
     isLoading(true);
     try {
       await homeRepository.getCharacters().then((value) {
@@ -33,7 +33,7 @@ class HomeController extends GetxController {
     }
   }
 
-  getSearchCharacters({required String search}) async {
+  Future<void> getSearchCharacters({required String search}) async {
     isLoading(true);
 
     try {
@@ -52,14 +52,6 @@ class HomeController extends GetxController {
   }
 
   handleDeleteCache() async {
-    // UrlHelper urlHelper = UrlHelper();
-
-    // String finalUrl =
-    //     urlHelper.generateUrl(path: 'characters', params: '&orderBy=modified');
-    // bool response = await dioCache.dioCacheManager.deleteByPrimaryKey(
-    //   '/$finalUrl',
-    // );
-
     final response = await dioCache.dioCacheManager.clearAll();
 
     print(response);
