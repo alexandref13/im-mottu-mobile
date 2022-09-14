@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:mottu/shared/models/character_model.dart';
 import 'package:mottu/src/home/home_repository.dart';
 
-import '../../shared/helpers/url_helper.dart';
 import '../../shared/service/dio_cache.dart';
 
 class HomeController extends GetxController {
@@ -53,12 +52,15 @@ class HomeController extends GetxController {
   }
 
   handleDeleteCache() async {
-    UrlHelper urlHelper = UrlHelper();
+    // UrlHelper urlHelper = UrlHelper();
 
-    String finalUrl =
-        urlHelper.generateUrl(path: 'characters', params: '&orderBy=modified');
-    bool response = await dioCache.dioCacheManager
-        .deleteByPrimaryKey('http://gateway.marvel.com/v1/public/$finalUrl');
+    // String finalUrl =
+    //     urlHelper.generateUrl(path: 'characters', params: '&orderBy=modified');
+    // bool response = await dioCache.dioCacheManager.deleteByPrimaryKey(
+    //   '/$finalUrl',
+    // );
+
+    final response = await dioCache.dioCacheManager.clearAll();
 
     print(response);
   }

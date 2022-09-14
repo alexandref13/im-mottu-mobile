@@ -48,6 +48,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Scaffold(
         appBar: AppBar(
           title: const Text("I'm Mottu"),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await controller.getCharacters();
+              },
+              icon: const Icon(
+                Icons.refresh_sharp,
+              ),
+            )
+          ],
         ),
         body: Obx(
           () => controller.isLoading.value
